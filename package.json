@@ -1,21 +1,36 @@
 {
-  "scripts": {
-    "test": "tape ./tests/index.js",
-    "linter": "eslint index.js test/index.js"
+  "name": "memory-blob-store",
+  "version": "0.0.0",
+  "description": "An in-memory blob store",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
   },
-  "devDependencies": {
+  "dependencies": {
     "abstract-blob-store": "^3.2.0",
-    "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
+    "eslint": "^3.14.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
     "longjohn": "^0.2.12",
     "tape": "^4.6.3"
   },
-  "files": {
-    "LICENSE",
-    "README.md",
-    "index.js"
-  }
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/retrohacker/memory-blob-store.git"
+  },
+  "keywords": [
+    "abstract-blob-store"
+  ],
+  "author": "William Blankenship <william.jblankenship@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/retrohacker/memory-blob-store/issues"
+  },
+  "homepage": "https://github.com/retrohacker/memory-blob-store#readme"
 }

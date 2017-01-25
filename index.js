@@ -1,4 +1,5 @@
 const stream = require('stream');
+const timers = require('timers')
 
 function MemoryBlobStore() {
   if (!(this instanceof MemoryBlobStore)) {
@@ -18,7 +19,7 @@ function createWriteStream(opts, cb) {
   }
 
   if (typeof key !== 'string') {
-    return setImmediate(cb, 'Must include a key as a string');
+    return timers.setImmediate(cb, 'Must include a key as a string');
   }
 
   const ws = new stream.Writable();
@@ -32,18 +33,18 @@ function createWriteStream(opts, cb) {
   self.store[key] = Buffer(0);
   ws._write = function write(chunk, encoding, done) {
     if (!self.store[key]) {
-      return setImmediate(done, new Error('Blob does not exist'));
+      return timers.setImmediate(done, new Error('Blob does not exist'));
     }
     const buffer = Buffer.from(chunk);
     self.store[key] = Buffer.concat([self.store[key], buffer]);
     self._writeToReaders(key, buffer);
-    return setImmediate(done);
+    return timers.setImmediate(done);
   };
 
   ws.on('finish', () => {
     delete self.writing[key];
     self._closeReaders(key);
-    return setImmediate(cb, null, { key });
+    return timers.setImmediate(cb, null, { key });
   });
   return ws;
 }
@@ -72,11 +73,11 @@ function remove(opts, cb) {
   }
 
   if (typeof key !== 'string') {
-    return setImmediate(cb, 'Must include a key as a string');
+    return timers.setImmediate(cb, 'Must include a key as a string');
   }
 
   delete this.store[key];
-  return setImmediate(cb);
+  return timers.setImmediate(cb);
 }
 MemoryBlobStore.prototype.remove = remove;
 
@@ -99,7 +100,7 @@ function createReadStream(opts) {
     delete self.readers[key];
   }
   if (!self.store[key]) {
-    setImmediate(rs.emit.bind(rs), 'error', new Error('Blob does not exist.'));
+    timers.setImmediate(rs.emit.bind(rs), 'error', new Error('Blob does not exist.'));
   }
   rs._read = function noop() {};
   return rs;
@@ -113,10 +114,10 @@ function exists(opts, cb) {
   }
 
   if (typeof key !== 'string') {
-    return setImmediate(cb, new Error('key must be provided'));
+    return timers.setImmediate(cb, new Error('key must be provided'));
   }
 
-  return setImmediate(cb, null, this.store[key] !== undefined);
+  return timers.setImmediate(cb, null, this.store[key] !== undefined);
 }
 MemoryBlobStore.prototype.exists = exists;
 

@@ -1,6 +1,6 @@
 {
   "name": "memory-blob-store",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "An in-memory blob store",
   "main": "index.js",
   "directories": {

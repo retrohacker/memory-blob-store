@@ -1,5 +1,5 @@
 const stream = require('stream');
-const timers = require('timers')
+const timers = require('timers');
 
 function MemoryBlobStore() {
   if (!(this instanceof MemoryBlobStore)) {

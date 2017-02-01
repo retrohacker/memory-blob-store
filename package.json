@@ -6,17 +6,16 @@
   "directories": {
     "test": "tests"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "abstract-blob-store": "^3.2.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint": "^3.14.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "longjohn": "^0.2.12",
     "tape": "^4.6.3"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "tape tests/index.js",
     "linter": "eslint index.js tests/index.js"

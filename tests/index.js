@@ -8,7 +8,7 @@ function setup(t, cb) {
 
 function teardown(t, store, blob, cb) {
   if (blob) {
-    return Store.remove(blob, cb);
+    return store.remove(blob, cb);
   }
   return cb();
 }

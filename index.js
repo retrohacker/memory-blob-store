@@ -66,7 +66,7 @@ function _closeReaders(key) {
     return null;
   }
 
-  for (let i = 0; this.readers[key].length; i += 1) {
+  for (let i = 0; i < this.readers[key].length; i += 1) {
     this.readers[key][i].push(null);
   }
   delete this.readers[key];

@@ -13,6 +13,8 @@ function MemoryBlobStore() {
 
 function createWriteStream(opts, cb) {
   const self = this;
+  cb = cb || function noop() {};
+
   let key = opts;
   if (typeof opts === 'object') {
     key = key.name || key.key;
@@ -67,6 +69,7 @@ function _closeReaders(key) {
 MemoryBlobStore.prototype._closeReaders = _closeReaders;
 
 function remove(opts, cb) {
+  cb = cb || function noop() {};
   let key = opts;
   if (typeof key === 'object') {
     key = key.key;
@@ -108,7 +111,9 @@ function createReadStream(opts) {
 MemoryBlobStore.prototype.createReadStream = createReadStream;
 
 function exists(opts, cb) {
+  cb = cb || function noop() {};
   let key = opts;
+
   if (typeof key === 'object') {
     key = key.key;
   }

@@ -55,6 +55,10 @@ function createWriteStream(opts, cb) {
 MemoryBlobStore.prototype.createWriteStream = createWriteStream;
 
 function _writeToReaders(key, buffer) {
+  if(!this.readers[key]) {
+    return null;
+  }
+
   for (let i = 0; i < this.readers[key].length; i += 1) {
     this.readers[key][i].push(buffer);
   }

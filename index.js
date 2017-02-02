@@ -25,11 +25,12 @@ function createWriteStream(opts, cb) {
   }
 
   const ws = new stream.Writable();
-  self.readers[key] = self.readers[key] || {};
+
   if (self.writing[key]) {
     self._closeReaders(key);
   }
-  self.readers[key] = {};
+
+  self.readers[key] = [];
   self.writing[key] = true;
 
   self.store[key] = Buffer(0);
@@ -54,13 +55,17 @@ function createWriteStream(opts, cb) {
 MemoryBlobStore.prototype.createWriteStream = createWriteStream;
 
 function _writeToReaders(key, buffer) {
-  for (let i = 0; this.readers[key].length; i += 1) {
-    this.readers[i].push(buffer);
+  for (let i = 0; i < this.readers[key].length; i += 1) {
+    this.readers[key][i].push(buffer);
   }
 }
 MemoryBlobStore.prototype._writeToReaders = _writeToReaders;
 
 function _closeReaders(key) {
+  if(!this.readers[key]) {
+    return null;
+  }
+
   for (let i = 0; this.readers[key].length; i += 1) {
     this.readers[key][i].push(null);
   }
@@ -96,15 +101,19 @@ function createReadStream(opts) {
   }
 
   const rs = new stream.Readable();
-  self.readers[key] = self.readers[key] || {};
   rs.push(self.store[key]);
+
   if (!self.writing[key]) {
     rs.push(null);
     delete self.readers[key];
+  } else {
+    self.readers[key].push(rs);
   }
+
   if (!self.store[key]) {
     timers.setImmediate(rs.emit.bind(rs), 'error', new Error('Blob does not exist.'));
   }
+
   rs._read = function noop() {};
   return rs;
 }

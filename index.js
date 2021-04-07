@@ -5,7 +5,8 @@ function MemoryBlobStore() {
   if (!(this instanceof MemoryBlobStore)) {
     return new MemoryBlobStore();
   }
-  this.store = {};
+  this.autoIndex = 0;
+  this.store = Object.create(null);
   this.writing = {};
   this.readers = {};
   return this;
@@ -21,7 +22,10 @@ function createWriteStream(opts, cb) {
   }
 
   if (typeof key !== 'string') {
-    return timers.setImmediate(cb, 'Must include a key as a string');
+    while (this.autoIndex in this.store) {
+      this.autoIndex++;
+    }
+    key = this.autoIndex.toString();
   }
 
   const ws = new stream.Writable();
@@ -33,7 +37,7 @@ function createWriteStream(opts, cb) {
   self.readers[key] = [];
   self.writing[key] = true;
 
-  self.store[key] = Buffer(0);
+  self.store[key] = Buffer.alloc(0);
   ws._write = function write(chunk, encoding, done) {
     if (!self.store[key]) {
       return timers.setImmediate(done, new Error('Blob does not exist'));

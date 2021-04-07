@@ -39,3 +39,17 @@ test('handles multiple readers during write stream', function(t) {
     }
   });
 });
+
+test('autogenerates a key when not provided', function(t) {
+  setup(null, function (e, store) {
+    t.plan(2);
+
+    store.createWriteStream({}, function (e, opts) {
+      t.equal(opts.key, '0');
+
+      store.createWriteStream({}, function (e, opts) {
+        t.equal(opts.key, '1');
+      }).end();
+    }).end();
+  });
+})
